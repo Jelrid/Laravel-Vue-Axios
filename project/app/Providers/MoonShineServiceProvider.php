@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\DetailOrders;
 use App\Models\Orders;
+use App\MoonShine\Resources\DetailOrdersResource;
 use App\MoonShine\Resources\OrdersResource;
 use MoonShine\Menu\MenuGroup;
 use MoonShine\Menu\MenuItem;
@@ -30,7 +32,8 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
                     ->translatable(),
             ])->translatable(),
             MenuGroup::make('Заказы', [
-                MenuItem::make('Заказы', new OrdersResource)->badge(fn() => Orders::query()->count())
+                MenuItem::make('Заказы', new OrdersResource)->badge(fn() => Orders::query()->count()),
+                MenuItem::make('Детали заказов', new DetailOrdersResource)->badge(fn() => DetailOrders::query()->count())
 
             ])->icon('heroicons.banknotes')
         ];
