@@ -3,6 +3,9 @@ import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import TrashIcon from '@/icon/Trash.vue';
 import NoteIcon from '@/icon/Note.vue';
+import ArrowUp from '@/icon/ArrowUp.vue';
+import ArrowDown from '@/icon/ArrowDown.vue';
+import Open from '@/icon/Open.vue';
 
 
 const props = defineProps({
@@ -11,70 +14,85 @@ const props = defineProps({
 });
 </script>
 
-
+<style>
+.v-expansion-panel-title__overlay {
+    display: none !important;
+}
+.v-expansion-panel-title{
+    cursor: default !important;
+}
+</style>
 
 <template>
 
-    <Head title="Главнвя" />
+    <Head title="Главнaя" />
 
     <GuestLayout>
-        <div class="py-12">
-            <v-row></v-row>
-            <div class="grid grid-cols-10">
-                <div class="col-span-2 ml-4">Наименование</div>
-                <div class="flex justify-center ">Кол-во</div>
-                <div class="flex justify-center">Источник</div>
-                <div class="flex justify-center">Лазер</div>
-                <div class="flex justify-center">Сварка</div>
-                <div class="flex justify-center">Сборка</div>
-                <div class="flex justify-center">Электр</div>
-                <div class="col-span-2 flex justify-end" />
+        <v-expansion-panels multiple >
+            <v-container>
 
-            </div>
-        </div>
-        <v-expansion-panels>
-            <v-expansion-panel v-for="order in orders" class="border">
-                <v-expansion-panel-title class="bg-gray-100">
+                <v-row no-gutters>
+                    <v-col />
+                    <v-col align="center">Наименование</v-col>
+                    <v-col align="center">Кол-во</v-col>
+                    <v-col align="center">Источник</v-col>
+                    <v-col align="center">Лазер</v-col>
+                    <v-col align="center">Сварка</v-col>
+                    <v-col align="center">Сборка</v-col>
+                    <v-col align="center">Электр</v-col>
+                    <v-col cols="2" />
+                </v-row>
 
-                    <div class="grid grid-cols-10 justify-end gap-x-24">
-                        <div class="col-span-2">{{ order.title }}</div>
-                        <div class="flex justify-center ml-8">{{ order.quanity }}</div>
-                        <div class="flex justify-center ml-8">{{ order.source }}</div>
-                        <div class="flex justify-center  ml-8">{{ order.laser }}</div>
-                        <div class="flex justify-center  ml-6">{{ order.welding }}</div>
-                        <div class="flex justify-center  ml-4">{{ order.construct }}</div>
-                        <div class="flex justify-center  ml-4">{{ order.electro }}</div>
-                        <div class="col-span-2 flex justify-end">
-                            <a href="/" class="z-10">
-                                <NoteIcon />
-                            </a>
-                            <a href="/" class="z-10">
-                                <TrashIcon />
-                            </a>
-                        </div>
-                    </div>
-
-                </v-expansion-panel-title>
-
-
-
-                <v-expansion-panel-text v-for="orderDetail in ordersDetail" class=" rounded-lg mt-5 p-1">
-
-                    <div class="grid grid-cols-10 justify-end gap-x-24"
-                        v-if="order.id === orderDetail.orders_id">
-
-                        <div class="col-span-2">{{ orderDetail.title }}</div>
-                        <div class="flex justify-center ml-8">{{ orderDetail.quanity }}</div>
-                        <div class="flex justify-center ml-8">{{ orderDetail.source }}</div>
-                        <div class="flex justify-center  ml-8">{{ orderDetail.laser }}</div>
-                        <div class="flex justify-center  ml-6">{{ orderDetail.welding }}</div>
-                        <div class="flex justify-center  ml-4">{{ orderDetail.construct }}</div>
-                        <div class="flex justify-center  ml-4">{{ orderDetail.electro }}</div>
-
-
-                    </div>
-                </v-expansion-panel-text>
-            </v-expansion-panel>
+                <v-expansion-panel v-for="order in orders" class="border cursor-default">
+                    <v-row no-gutters>
+                        <v-expansion-panel-title :disabled="ordersDetail.some(detail => detail.orders_id !== order.id)">
+                            <v-col no-gutters cols="1">
+                                <v-col>
+                                    <a href="/">
+                                        <ArrowUp />
+                                    </a>
+                                    <a href="/">
+                                        <ArrowDown />
+                                    </a>
+                                </v-col>
+                            </v-col>
+                            <v-col>
+                                <v-row>
+                                    <v-col v-if=" ordersDetail.some(detail => detail.orders_id === order.id)" class="flex " align="center">{{ order.title }}<div><Open class="cursor-pointer "/></div></v-col>
+                                    <v-col v-else class="flex " align="center" >{{ order.title }}</v-col>
+                                    <v-col align="center">{{ order.quanity }}</v-col>
+                                    <v-col align="center">{{ order.source }}</v-col>
+                                    <v-col align="center">{{ order.laser }}</v-col>
+                                    <v-col align="center">{{ order.welding }}</v-col>
+                                    <v-col cols="1" align="center">{{ order.construct }}</v-col>
+                                    <v-col cols="2" align="center">{{ order.electro }}</v-col>
+                                    <v-col class="flex">
+                                        <a href="/" class="z-10">
+                                            <NoteIcon />
+                                        </a>
+                                        <a href="/" class="z-10">
+                                            <TrashIcon />
+                                        </a>
+                                    </v-col>
+                                </v-row>
+                            </v-col>
+                        </v-expansion-panel-title>
+                    </v-row>
+                    <v-expansion-panel-text v-for="orderDetail in ordersDetail">
+                        <v-row no-gutters v-if="order.id === orderDetail.orders_id">
+                            <v-col cols="1" />
+                            <v-col align="center">{{ orderDetail.title }}</v-col>
+                            <v-col align="center">{{ orderDetail.quanity }}</v-col>
+                            <v-col align="center">{{ orderDetail.source }}</v-col>
+                            <v-col align="center">{{ orderDetail.laser }}</v-col>
+                            <v-col align="center">{{ orderDetail.welding }}</v-col>
+                            <v-col cols="1" align="center">{{ orderDetail.construct }}</v-col>
+                            <v-col cols="2" align="center">{{ orderDetail.electro }}</v-col>
+                            <v-col />
+                        </v-row>
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+            </v-container>
         </v-expansion-panels>
     </GuestLayout>
 </template>
