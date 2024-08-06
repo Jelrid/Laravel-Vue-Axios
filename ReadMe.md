@@ -18,7 +18,7 @@
 ```console
     project> php artisan serve 
     project> npm run dev
-    ```
+```
 5. Перейти в браузер по ссылке указаной в консоли ввода команды php artisan serve.
 
 
