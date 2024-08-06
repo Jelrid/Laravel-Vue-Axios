@@ -22,6 +22,7 @@ const props = defineProps({
 .v-expansion-panel-title {
     cursor: default !important;
 }
+
 </style>
 
 <template>
@@ -45,8 +46,8 @@ const props = defineProps({
                 </v-row>
 
                 <v-expansion-panel v-for="order in orders" class="border cursor-default">
-                    <v-row no-gutters>
-                        <v-expansion-panel-title :disabled="ordersDetail.some(detail => detail.orders_id !== order.id)">
+                    
+                        <v-expansion-panel-title >
                             <v-col no-gutters cols="1">
                                 <v-col>
                                     <a href="/" @click="upIndex(order.id)">
@@ -81,20 +82,23 @@ const props = defineProps({
                                 </v-row>
                             </v-col>
                         </v-expansion-panel-title>
-                    </v-row>
-                    <v-expansion-panel-text v-for="orderDetail in ordersDetail">
-                        <v-row no-gutters v-if="order.id === orderDetail.orders_id">
-                            <v-col cols="1" />
-                            <v-col align="center">{{ orderDetail.title }}</v-col>
-                            <v-col align="center">{{ orderDetail.quanity }}</v-col>
-                            <v-col align="center">{{ orderDetail.source }}</v-col>
-                            <v-col align="center">{{ orderDetail.laser }}</v-col>
-                            <v-col align="center">{{ orderDetail.welding }}</v-col>
-                            <v-col cols="1" align="center">{{ orderDetail.construct }}</v-col>
-                            <v-col cols="2" align="center">{{ orderDetail.electro }}</v-col>
-                            <v-col />
-                        </v-row>
-                    </v-expansion-panel-text>
+                    <div v-for="orderDetail in ordersDetail">
+
+                        <v-expansion-panel-text v-if="order.id === orderDetail.orders_id">
+                            <v-row no-gutters >
+                                <v-col cols="1" />
+                                <v-col align="center">{{ orderDetail.title }}</v-col>
+                                <v-col align="center">{{ orderDetail.quanity }}</v-col>
+                                <v-col align="center">{{ orderDetail.source }}</v-col>
+                                <v-col align="center">{{ orderDetail.laser }}</v-col>
+                                <v-col align="center">{{ orderDetail.welding }}</v-col>
+                                <v-col cols="1" align="center">{{ orderDetail.construct }}</v-col>
+                                <v-col cols="2" align="center">{{ orderDetail.electro }}</v-col>
+                                <v-col />
+                            </v-row>
+                            
+                        </v-expansion-panel-text>
+                    </div>
                 </v-expansion-panel>
             </v-container>
         </v-expansion-panels>
