@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('electro')->nullable();
 
             $table->unsignedBigInteger('orders_id');
-            $table->foreign('orders_id')->references('id')->on('orders');
+            $table->foreign('orders_id')->references('id')->on('orders')->onDelete('cascade');
             $table->timestamps();
         });
     }

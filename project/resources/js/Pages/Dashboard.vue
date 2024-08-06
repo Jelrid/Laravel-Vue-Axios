@@ -18,7 +18,8 @@ const props = defineProps({
 .v-expansion-panel-title__overlay {
     display: none !important;
 }
-.v-expansion-panel-title{
+
+.v-expansion-panel-title {
     cursor: default !important;
 }
 </style>
@@ -28,7 +29,7 @@ const props = defineProps({
     <Head title="Главнaя" />
 
     <GuestLayout>
-        <v-expansion-panels multiple >
+        <v-expansion-panels multiple>
             <v-container>
 
                 <v-row no-gutters>
@@ -48,18 +49,21 @@ const props = defineProps({
                         <v-expansion-panel-title :disabled="ordersDetail.some(detail => detail.orders_id !== order.id)">
                             <v-col no-gutters cols="1">
                                 <v-col>
-                                    <a href="/">
+                                    <a href="/" @click="upIndex(order.id)">
                                         <ArrowUp />
                                     </a>
-                                    <a href="/">
+                                    <a href="/" @click.="downIndex(order.id)">
                                         <ArrowDown />
                                     </a>
                                 </v-col>
                             </v-col>
                             <v-col>
                                 <v-row>
-                                    <v-col v-if=" ordersDetail.some(detail => detail.orders_id === order.id)" class="flex " align="center">{{ order.title }}<div><Open class="cursor-pointer "/></div></v-col>
-                                    <v-col v-else class="flex " align="center" >{{ order.title }}</v-col>
+                                    <v-col v-if="ordersDetail.some(detail => detail.orders_id === order.id)"
+                                        class="flex " align="center">{{ order.title }}<div>
+                                            <Open class="cursor-pointer " />
+                                        </div></v-col>
+                                    <v-col v-else class="flex " align="center">{{ order.title }}</v-col>
                                     <v-col align="center">{{ order.quanity }}</v-col>
                                     <v-col align="center">{{ order.source }}</v-col>
                                     <v-col align="center">{{ order.laser }}</v-col>
@@ -70,7 +74,7 @@ const props = defineProps({
                                         <a href="/" class="z-10">
                                             <NoteIcon />
                                         </a>
-                                        <a href="/" class="z-10">
+                                        <a href="/" @click="deleteOrder(order.id)" class="z-10 ">
                                             <TrashIcon />
                                         </a>
                                     </v-col>
@@ -96,3 +100,33 @@ const props = defineProps({
         </v-expansion-panels>
     </GuestLayout>
 </template>
+<script>
+import axios from 'axios';
+export default {
+    methods: {
+        upIndex(orderId) {
+            const index = '1'
+            axios.put(`http://localhost:8000/api/upDown/${orderId}/${index}`)
+            .then(() => {
+                    console.log('Позиция поднята');
+                })
+                .catch(error => console.error('Ошибка при поднятии:', error));
+        },
+        downIndex(orderId) {
+            const index = '-1'
+            axios.put(`http://localhost:8000/api/upDown/${orderId}/${index}`)
+            .then(() => {
+                    console.log('Позиция опущена');
+                })
+                .catch(error => console.error('Ошибка понижении:', error));
+        },
+        deleteOrder(orderId) {
+            axios.delete(`http://localhost:8000/api/orders/${orderId}`)
+                .then(() => {
+                    console.log('Заказ успешно удален');
+                })
+                .catch(error => console.error('Ошибка при удалении заказа:', error));
+        }
+    }
+}
+</script>
